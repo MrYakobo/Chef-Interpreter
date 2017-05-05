@@ -44,8 +44,8 @@ function sanitize(err){
     return typeof(err) == 'undefined' ? "" : err.split('.chef')[1].split('at /')[0];
 }
 
-var port = process.platform == 'win32' ? 80 : 8080
+var port = process.platform == 'win32' || (process.getuid && process.getuid() === 0) ? 80 : 8080
 
 app.listen(port, (req, res) => {
-    console.log(port);
+    console.log(`Listening on port ${port}!`);
 })
