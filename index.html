@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="bower_components/materialize/bin/materialize.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/materialize/bin/materialize.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">-->
+<style>
+    #res{
+        font-size: 1.2em;
+        font-weight: bold;
+        max-height: 80vh;
+        overflow-y: auto;
+    }    
+    .row .col{
+        padding:0;
+    }
+    #code{
+        white-space: pre-line;
+        outline:0;
+        color: rgb(184, 117, 0);
+        height: 80vh;
+        overflow-y: auto;
+        cursor: text;
+        resize: none;
+    }
+    
+    body{
+        overflow-x: hidden;
+    }
+</style>
+</head>
+
+<body class="row">
+    <main class="col s12 l10 offset-l1">
+        <h1 class="orange-text">Chef</h1>
+             <div class="col s12 m4 offset-m1 hide-on-med-and-up">
+                <div class="collection card-panel">       
+                    <h5 class="pink-text">Recipes</h5>
+                    {{#each recipes}}
+                        <a href="#{{this}}" class="collection-item">{{this}}</a>
+                    {{/each}}
+
+                    <p class="pink-text">Cook book available <a href="http://www.dangermouse.net/esoteric/chef.html" target="_blank">here.</a></p>                
+                </div>
+            </div>       
+        <div class="row">
+            <div class="col s12 m7">
+                <!--<div contenteditable="true" id="code" class="card-panel yellow lighten-4">
+                </div>-->
+                <textarea id="code" class="card-panel yellow lighten-4" autofocus></textarea>
+            </div>
+            <div class="col s12 m4 offset-m1">
+                <div id="res" class="card-panel green white-text"></div>
+            </div>
+            <div class="col s12 m4 offset-m1 hide-on-small-only">
+                <div class="collection card-panel">       
+                    <h5 class="pink-text">Recipes</h5>
+                    {{#each recipes}}
+                        <a href="#{{this}}" class="collection-item">{{this}}</a>
+                    {{/each}}
+                    <p class="pink-text">Cook book available <a href="http://www.dangermouse.net/esoteric/chef.html" target="_blank">here.</a></p>                
+                </div>
+            </div>
+        </div>
+        <!--<button onclick="postCode()" data-target="res" class="btn blue waves-effect">Submit</button>-->
+    </main>
+</body>
+
+<script>
+    window.onhashchange = function(){
+        getRecipe();
+    }
+    function getRecipe(){
+        $.get('/recipes/' + location.hash.split('#')[1] + ".chef", function(data){
+            $("#code").val(data);
+        });
+        $(".collection-item.active").removeClass('active white-text');
+        $("a[href='"+location.hash+"']").addClass('active white-text');
+    }
+    if(location.hash === ""){
+        location.hash = "helloworldcake";
+    }
+    getRecipe();
+
+    function postCode() {
+        $.get("code", { code: $("#code").val() }, function (data) {
+            data = JSON.parse(data);
+            var e = data.type=='err';
+            $("#res").removeClass(e ? 'green' : 'red').addClass(e ? 'red' : 'green');
+            $("#res").html(data.msg.replace(/\\n/g, '<br>'));
+        })
+    }
+
+    var old = '';
+    function check(){
+        var input = $("#code").val()
+        if(old != input){
+            postCode();
+        }
+        old = input;
+    }
+    setInterval(check, 1);
+
+</script>
+
+</html>
