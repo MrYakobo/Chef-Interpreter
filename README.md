@@ -16,5 +16,4 @@ NOTE! If you don't want to use sudo, take a look at `cpanm` and `local::lib`. I 
 ###### Hint: After the Acme::Chef is installed, you should be able to use `chef recipe.chef` from the command line.
 
 - Clone this repo, run `npm install` and `bower install`.
-- Run `node server.js` to start the service! It's available at localhost.
-
+- Run `node server.js` to start the service! It's available at the localhost/your public ip.
