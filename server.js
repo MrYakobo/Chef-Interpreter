@@ -33,7 +33,7 @@ app.get('/code', (req, res) => {
                 res.send(JSON.stringify({ type: 'msg', msg: stdout }))
             }
             fs.unlink(tmp, (a) => {
-                //removed tmp file
+                //remove tmp file
             })
         })
 
