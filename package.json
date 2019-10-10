@@ -13,8 +13,5 @@
     "express": "^4.15.2",
     "handlebars": "^4.0.8"
   },
-  "devDependencies": {
-    "bower": "^1.8.0"
-  },
   "description": ""
 }
